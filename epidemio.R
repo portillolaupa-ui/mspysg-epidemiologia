@@ -4,7 +4,8 @@ install.packages(c(
   "gtsummary",
   "epiR",
   "psych",
-  "broom"
+  "broom",
+  "openxlsx"
 ))
 
 library(tidyverse)
@@ -13,6 +14,7 @@ library(gtsummary)
 library(epiR)
 library(psych)
 library(broom)
+library(openxlsx)
 
 data <- read_excel("data/kuan-etal-plosone-2015.xlsx")
 
@@ -223,93 +225,4 @@ subset(
     stage_simple,
     stage_simple_2
   )
-)
-#=========================================================
-diccionario <- data.frame(
-  Variable = names(data),
-  Tipo_R = sapply(data, class),
-  Valores_Unicos = sapply(data, dplyr::n_distinct),
-  Descripcion = NA,
-  Tipo_Epidemiologico = NA,
-  Codificacion = NA
-)
-
-View(diccionario)
-
-#=========================================================
-documentar <- function(diccionario,
-                       variable,
-                       descripcion,
-                       tipo_epi,
-                       codificacion){
-  
-  diccionario[
-    diccionario$Variable == variable,
-    c("Descripcion",
-      "Tipo_Epidemiologico",
-      "Codificacion")
-  ] <- list(
-    descripcion,
-    tipo_epi,
-    codificacion
-  )
-  
-  return(diccionario)
-}
-
-#=========================================================
-diccionario <- documentar(diccionario, "Sex", "Sexo biológico del participante", "Cualitativa nominal dicotómica", "1 = Male; 2 = Female")
-diccionario <- documentar(diccionario, "Survival", "Mortalidad", "Cualitativa nominal dicotómica", "0 = Absence; 1 = Presence")
-diccionario <- documentar(diccionario, "Recurrence", "Recurrencia", "Cualitativa nominal dicotómica", "0 = Absence; 1 = Presence")
-diccionario <- documentar(diccionario, "stage_simple", "Estadio clínico", "Cualitativa ordinal", "1 = I; 2 = II; 3 = III; 4 = IV")
-diccionario <- documentar(diccionario, "Follow_up_month", "Tiempo de seguimiento", "Cuantitativa continua", "Meses")
-diccionario <- documentar(diccionario, "chemT", "Quimioterapia adyuvante", "Cualitativa nominal dicotómica", "0 = No; 1 = Sí")
-diccionario <- documentar(diccionario, "location", "Localización del tumor", "Cualitativa nominal politómica", "1–6 = Categorías de localización del tumor")
-diccionario <- documentar(diccionario, "CDKN2A_N", "Metilación del gen p16/CDKN2A en tejido normal", "Cualitativa nominal dicotómica", "0 = Unmethylated; 1 = Methylated")
-
-diccionario <- documentar(diccionario, "CDKN2A_N", "Estado de metilación del promotor del gen CDKN2A (p16) en tejido normal", "Cualitativa nominal dicotómica", "0 = Unmethylated; 1 = Methylated")
-diccionario <- documentar(diccionario, "CDKN2A_T", "Estado de metilación del promotor del gen CDKN2A (p16) en tejido tumoral", "Cualitativa nominal dicotómica", "0 = Unmethylated; 1 = Methylated")
-diccionario <- documentar(diccionario, "MLH1_N", "Estado de metilación del promotor del gen MLH1 en tejido normal", "Cualitativa nominal dicotómica", "0 = Unmethylated; 1 = Methylated")
-diccionario <- documentar(diccionario, "MLH1_T", "Estado de metilación del promotor del gen MLH1 en tejido tumoral", "Cualitativa nominal dicotómica", "0 = Unmethylated; 1 = Methylated")
-diccionario <- documentar(diccionario, "MGMT_N", "Estado de metilación del promotor del gen MGMT en tejido normal", "Cualitativa nominal dicotómica", "0 = Unmethylated; 1 = Methylated")
-diccionario <- documentar(diccionario, "MGMT_T", "Estado de metilación del promotor del gen MGMT en tejido tumoral", "Cualitativa nominal dicotómica", "0 = Unmethylated; 1 = Methylated")
-
-diccionario <- documentar(diccionario, "stage_simple_2", "Estadio clínico agrupado", "Cualitativa ordinal dicotómica", "1 = Local stage (I–II); 2 = Advanced stage (III–IV)")
-diccionario <- documentar(diccionario, "p16N", "Estado combinado del promotor del gen CDKN2A (p16) en tejido normal y estadio clínico agrupado", "Cualitativa nominal politómica", "1 = Unmethylated + Local; 2 = Unmethylated + Advanced; 3 = Methylated + Local; 4 = Methylated + Advanced")
-diccionario <- documentar(diccionario, "p16T", "Estado combinado del promotor del gen CDKN2A (p16) en tejido tumoral y estadio clínico agrupado", "Cualitativa nominal politómica", "1 = Unmethylated + Local; 2 = Unmethylated + Advanced; 3 = Methylated + Local; 4 = Methylated + Advanced")
-diccionario <- documentar(diccionario, "ml_N", "Estado combinado del promotor del gen MLH1 en tejido normal y estadio clínico agrupado", "Cualitativa nominal politómica", "1 = Unmethylated + Local; 2 = Unmethylated + Advanced; 3 = Methylated + Local; 4 = Methylated + Advanced")
-diccionario <- documentar(diccionario, "ml_T", "Estado combinado del promotor del gen MLH1 en tejido tumoral y estadio clínico agrupado", "Cualitativa nominal politómica", "1 = Unmethylated + Local; 2 = Unmethylated + Advanced; 3 = Methylated + Local; 4 = Methylated + Advanced")
-diccionario <- documentar(diccionario, "mg_N", "Estado combinado del promotor del gen MGMT en tejido normal y estadio clínico agrupado", "Cualitativa nominal politómica", "1 = Unmethylated + Local; 2 = Unmethylated + Advanced; 3 = Methylated + Local; 4 = Methylated + Advanced")
-diccionario <- documentar(diccionario, "mg_T", "Estado combinado del promotor del gen MGMT en tejido tumoral y estadio clínico agrupado", "Cualitativa nominal politómica", "1 = Unmethylated + Local; 2 = Unmethylated + Advanced; 3 = Methylated + Local; 4 = Methylated + Advanced")
-
-diccionario <- documentar(
-  diccionario,
-  "all_gene_N_2vs1",
-  "Comparación entre las categorías 2 y 1 de all_gene_N",
-  "Cualitativa nominal dicotómica",
-  "1 = Grupo 1; 2 = Grupo 2; NA = Grupos 3 y 4"
-)
-
-diccionario <- documentar(
-  diccionario,
-  "all_gene_N_3vs1",
-  "Comparación entre las categorías 3 y 1 de all_gene_N",
-  "Cualitativa nominal dicotómica",
-  "1 = Grupo 1; 2 = Grupo 3; NA = Grupos 2 y 4"
-)
-
-diccionario <- documentar(
-  diccionario,
-  "all_gene_N_23vs1",
-  "Comparación entre las categorías 2 y 3 versus la categoría 1 de all_gene_N",
-  "Cualitativa nominal dicotómica",
-  "1 = Grupo 1; 2 = Grupos 2 y 3; NA = Grupo 4"
-)
-
-diccionario <- documentar(
-  diccionario,
-  "all_gene_N_4vs1",
-  "Comparación entre las categorías 4 y 1 de all_gene_N",
-  "Cualitativa nominal dicotómica",
-  "1 = Grupo 1; 2 = Grupo 4; NA = Grupos 2 y 3"
 )
