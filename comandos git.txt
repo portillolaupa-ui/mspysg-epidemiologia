@@ -1,0 +1,22 @@
+git status
+git Branch
+git remote -v
+
+git log --oneline
+
+git add .
+git commit -m "20260702-0907"
+git push
+
+git pull
+
+git restore <file>
+git add <file>
+
+git stash
+git pull
+git stash pop
+
+git diff <file>
+
+git ls-files
