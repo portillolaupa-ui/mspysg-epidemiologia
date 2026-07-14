@@ -31,12 +31,6 @@ tabla_1 <- data %>%
     Recurrence,
     Survival,
     chemT,
-    CDKN2A_N,
-    MGMT_N,
-    MLH1_N,
-    CDKN2A_T,
-    MGMT_T,
-    MLH1_T,
     Follow_up_month
   ) %>%
   tbl_summary(
@@ -59,12 +53,6 @@ tabla_1 <- data %>%
       Recurrence ~ "Recurrencia",
       Survival ~ "Mortalidad",
       chemT ~ "Quimioterapia",
-      CDKN2A_N ~ "CDKN2A en tejido normal",
-      MGMT_N ~ "MGMT en tejido normal",
-      MLH1_N ~ "MLH1 en tejido normal",
-      CDKN2A_T ~ "CDKN2A en tejido tumoral",
-      MGMT_T ~ "MGMT en tejido tumoral",
-      MLH1_T ~ "MLH1 en tejido tumoral",
       Follow_up_month ~ "Tiempo de seguimiento, meses"
     )
   ) %>%
@@ -233,7 +221,10 @@ tabla_metilacion
 tabla_metilacion %>%
   as_gt() %>%
   gt::gtsave(
-    filename = "outputs/tablas/tabla_2_metilacion_por_gen_y_tejido.png"
+    filename = "outputs/tablas/tabla_2_metilacion_por_gen_y_tejido.png",
+    vwidth = 3200,
+    vheight = 1600,
+    expand = 10
   )
 
 # Tabla características según recurrencia
