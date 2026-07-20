@@ -13,14 +13,14 @@ data$Sex <- factor(
 
 data$Survival <- factor(
   data$Survival,
-  levels = c(0,1),
-  labels = c("Absence", "Presence")
+  levels = c(1,0),
+  labels = c("Presence", "Absence")
 )
 
 data$Recurrence <- factor(
   data$Recurrence,
-  levels = c(0,1),
-  labels = c("Absence","Presence")
+  levels = c(1,0),
+  labels = c("Presence", "Absence")
 )
 
 data$stage_simple <- factor(
@@ -56,38 +56,38 @@ table(data$location, useNA = "ifany")
 
 data$CDKN2A_N <- factor(
   data$CDKN2A_N,
-  levels = c(0,1),
-  labels = c("Unmethylated","Methylated")
+  levels = c(1,0),
+  labels = c("Methylated","Unmethylated")
 )
 
 data$CDKN2A_T <- factor(
   data$CDKN2A_T,
-  levels = c(0,1),
-  labels = c("Unmethylated","Methylated")
+  levels = c(1,0),
+  labels = c("Methylated","Unmethylated")
 )
 
 data$MGMT_N <- factor(
   data$MGMT_N,
-  levels = c(0,1),
-  labels = c("Unmethylated","Methylated")
+  levels = c(1,0),
+  labels = c("Methylated","Unmethylated")
 )
 
 data$MGMT_T <- factor(
   data$MGMT_T,
-  levels = c(0,1),
-  labels = c("Unmethylated","Methylated")
+  levels = c(1,0),
+  labels = c("Methylated","Unmethylated")
 )
 
 data$MLH1_N <- factor(
   data$MLH1_N,
-  levels = c(0,1),
-  labels = c("Unmethylated","Methylated")
+  levels = c(1,0),
+  labels = c("Methylated","Unmethylated")
 )
 
 data$MLH1_T <- factor(
   data$MLH1_T,
-  levels = c(0,1),
-  labels = c("Unmethylated","Methylated")
+  levels = c(1,0),
+  labels = c("Methylated","Unmethylated")
 )
 
 table(data$CDKN2A_N)
