@@ -38,8 +38,8 @@ data$stage_simple_2 <- factor(
 
 data$chemT <- factor(
   data$chemT,
-  levels = c(0, 1),
-  labels = c("No", "Yes")
+  levels = c(1,0),
+  labels = c("Yes", "No")
 )
 
 table(data$Sex)
